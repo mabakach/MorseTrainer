@@ -35,6 +35,7 @@ void displayData();
 
 void setup() {
   Serial.begin(9600);
+  Serial.println("setup");
   currentMorseString[0] = '\0';
   lastMorseString[0] = '\0';
   currentDecodedString[0] = '\0';
@@ -43,10 +44,12 @@ void setup() {
   }
   clearString[DISPLAY_LENGTH] = '\0';
 
+  Serial.println("init LCD");
   // initialize lcd screen
   lcd.init();
   // turn on the backlight
   lcd.backlight();
+  Serial.println("init LCD finished");
 
   // init buttons
   pinMode(morseButtonPin, INPUT);
@@ -61,21 +64,21 @@ void readButtonState() {
 }
 
 void displayData() {
-  // tell the screen to write on the top row
+  // tell the screen to write on line 0
   lcd.setCursor(0, 0);
   lcd.print("Morse Code:");
-  lcd.print(millis() / 1000);
+  // move to line 1
   lcd.setCursor(0, 1);
+  // print the current morse text in . and -
   lcd.printstr(currentMorseString);
+  // overwrite all characters behind currentMorseString
   lcd.printstr(clearString);
+  // move to line 2
   lcd.setCursor(0, 2);
   lcd.print("Message: ");
-  // lcd.print("S: ");
-  // lcd.print(millisLastMorseButtonPressStarted);
-  // lcd.print("E: ");
-  // lcd.print(millisLastMorseButtonPressEnded);
-  // lcd.print("      ");
+  // move to line 3
   lcd.setCursor(0, 3);
+  // print the current decoded string as readable text.
   lcd.printstr(currentDecodedString);
 }
 
